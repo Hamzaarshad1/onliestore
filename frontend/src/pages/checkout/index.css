@@ -1,0 +1,33 @@
+.tax-info {
+    font-size: 14px;
+    text-align: right;
+    margin: 16px 0;
+}
+
+.total-info {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.checkout-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.checkout-item-image {
+    width: 80px;
+}
+
+.checkout-item-title {
+    margin-left: 30px;
+}
+
+.checkout-item-quantity {
+    margin-left: 30px;
+}
+
+.no-items-alert {
+    text-align: center;
+}

@@ -1,0 +1,35 @@
+.product-image {
+    width: 100%;
+}
+
+.title {
+    font-size: 18px;
+    height: 40px;
+    font-weight: 600;
+}
+
+.price {
+    font-size: 16px;
+    margin: 8px 0px;
+    font-weight: 500;
+}
+
+.description {
+    font-size: 14px;
+    height: 90px;
+    overflow-y: hidden;
+}
+
+.description.show-full {
+    height: unset;
+}
+
+.show-more-button {
+    font-size: 13px;
+    color: blue;
+    cursor: pointer;
+}
+
+.add-to-cart-row {
+    display: flex;
+}
