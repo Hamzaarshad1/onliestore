@@ -7,10 +7,10 @@ import {
   TableHead,
   TableRow
 } from '@mui/material'
-import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
+import { getOrderHistory } from '../../apiHelper'
 import AppBar from '../../common/components/AppBar'
-import { CURRENCY, ORDERS_API_PATH } from '../../config'
+import { CURRENCY } from '../../config'
 import UserContext from '../../UserContext'
 
 const OrderHistory = () => {
@@ -19,9 +19,7 @@ const OrderHistory = () => {
 
   const getOrderList = async () => {
     try {
-      const { data } = await axios.get(ORDERS_API_PATH, {
-        params: { userId: user.userId }
-      })
+      const { data } = await getOrderHistory(user.accessToken)
       setOrderList(data)
     } catch (err) {
       console.log(err)

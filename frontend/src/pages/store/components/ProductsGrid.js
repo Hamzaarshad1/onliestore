@@ -1,15 +1,15 @@
 import { Button, Card, CardContent, Grid, TextField } from '@mui/material'
-import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
-import { CART_API_PATH, PRODUCTS_API_PATH } from '../../../config'
+import { getCart, getProducts, postCart } from '../../../apiHelper'
 import UserContext from '../../../UserContext'
 
 const ProductsGrid = () => {
+  const { user } = useContext(UserContext)
   const [productList, setProductList] = useState([])
 
-  const getProducts = async () => {
+  const getProductList = async () => {
     try {
-      const { data } = await axios.get(PRODUCTS_API_PATH)
+      const { data } = await getProducts(user.accessToken)
       setProductList(data)
     } catch (err) {
       console.log(err)
@@ -17,7 +17,7 @@ const ProductsGrid = () => {
   }
 
   useEffect(() => {
-    getProducts()
+    getProductList()
   }, [])
 
   return (
@@ -58,9 +58,7 @@ const ProductCard = ({ product }) => {
     }
     try {
       // Get previous cart items
-      const { data } = await axios.get(CART_API_PATH, {
-        params: { userId: user.userId }
-      })
+      const { data } = await getCart(user.accessToken)
       let products = []
       if (data && data.products?.length) {
         products = data.products
@@ -68,8 +66,9 @@ const ProductCard = ({ product }) => {
 
       // Create new cart array
       const productIndex = products.findIndex(
-        ({ _id: productId }) => productId === _id
+        ({ productId }) => productId === _id
       )
+
       if (productIndex !== -1) {
         products[productIndex].quantity += parseInt(quantity)
       } else {
@@ -80,10 +79,9 @@ const ProductCard = ({ product }) => {
       }
 
       // POST new product array
-      await axios.post(CART_API_PATH, {
-        userid: user.userId,
-        products
-      })
+      await postCart(user.accessToken, { products })
+      setError('')
+      setQuantity('1')
     } catch (err) {
       console.log(err)
     }

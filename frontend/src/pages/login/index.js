@@ -1,8 +1,7 @@
 import { Button, Card, CardContent, TextField } from '@mui/material'
-import axios from 'axios'
 import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LOGIN_API_PATH } from '../../config'
+import { login } from '../../apiHelper'
 import UserContext from '../../UserContext'
 
 const formTextFieldStyles = {
@@ -30,12 +29,12 @@ const Login = () => {
     }
     try {
       setError({})
-      const { data } = await axios.post(LOGIN_API_PATH, { email, password })
-      if (data) {
+      const { data } = await login(email, password)
+      if (data && data.accessToken) {
         setUser({
-          userId: data.id
+          accessToken: data.accessToken
         })
-        window.localStorage.setItem('user-id', data.id)
+        window.localStorage.setItem('access-token', data.accessToken)
       }
     } catch (err) {
       if (err?.response?.status === 401 || err?.response?.status === 400) {

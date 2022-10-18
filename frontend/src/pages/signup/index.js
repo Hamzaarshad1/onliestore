@@ -1,8 +1,7 @@
 import { Button, Card, CardContent, TextField } from '@mui/material'
-import axios from 'axios'
 import { useState } from 'react'
-import { USERS_API_PATH } from '../../config'
 import { useNavigate } from 'react-router-dom'
+import { signup } from '../../apiHelper'
 
 const formTextFieldStyles = {
   marginBottom: 3
@@ -42,7 +41,7 @@ const Signup = () => {
     }
     setFormError({})
     try {
-      await axios.post(USERS_API_PATH, { name, email, password })
+      await signup({ name, email, password })
       navigate('/')
     } catch (err) {
       console.log(err)

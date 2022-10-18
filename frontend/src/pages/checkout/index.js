@@ -4,16 +4,10 @@ import AppBar from '../../common/components/AppBar'
 import OrderBasket from './components/OrderBasket'
 import { Button, Card, CardContent, TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import {
-  CART_API_PATH,
-  CURRENCY,
-  ORDERS_API_PATH,
-  SINGLE_PRODUCT_API_PATH,
-  TAX_PERCENTAGE
-} from '../../config'
+import { CURRENCY, TAX_PERCENTAGE } from '../../config'
 import { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
 import UserContext from '../../UserContext'
+import { getCart, getSingleProduct, postOrder } from '../../apiHelper'
 
 const checkoutElementStyles = {
   marginTop: 3
@@ -30,14 +24,15 @@ const Checkout = () => {
 
   const getBasketAndTotal = async () => {
     try {
-      const { data } = await axios.get(CART_API_PATH, {
-        params: { userId: user.userId }
-      })
+      const { data } = await getCart(user.accessToken)
       if (data && data.products.length) {
+        // Populate products
         const itemPromises = data?.products?.map(({ productId }) => {
-          return axios.get(SINGLE_PRODUCT_API_PATH, { params: { productId } })
+          return getSingleProduct(user.accessToken, productId)
         })
         const responses = await Promise.all(itemPromises)
+
+        // Get items for cart
         const items = []
         let total = 0
         for (const index in responses) {
@@ -67,7 +62,7 @@ const Checkout = () => {
       return
     }
     try {
-      await axios.post(ORDERS_API_PATH, {
+      await postOrder(user.accessToken, {
         userId: user.userId,
         products: items.map(({ product, quantity }) => ({
           productId: product._id,

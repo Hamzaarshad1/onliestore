@@ -13,9 +13,9 @@ const App = () => {
   const [user, setUser] = useState({})
 
   useEffect(() => {
-    const userId = window.localStorage.getItem('user-id')
-    if (userId) {
-      setUser({ userId })
+    const accessToken = window.localStorage.getItem('access-token')
+    if (accessToken) {
+      setUser({ accessToken })
     }
   }, [])
 
@@ -23,7 +23,7 @@ const App = () => {
     <UserContext.Provider value={{ user, setUser }}>
       <BrowserRouter>
         <Routes>
-          {user?.userId ? (
+          {user?.accessToken ? (
             <>
               <Route path='/' element={<Store />} />
               <Route path='/order-history' element={<OrderHistory />} />

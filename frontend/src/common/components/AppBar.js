@@ -13,7 +13,7 @@ const ButtonAppBar = () => {
 
   const handleLogout = () => {
     setUser({})
-    window.localStorage.removeItem('user-id')
+    window.localStorage.removeItem('access-token')
     handlePathChange('/')
   }
 
